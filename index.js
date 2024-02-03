@@ -17,10 +17,17 @@ bot.once('ready', () => {
                 .setLabel('Senior')
                 .setStyle('Danger'),
     );
-
-
     const channel = bot.channels.cache.get('1201972636650045570');
     channel.send({ content: 'message', components: [buttons] });
+});
+
+bot.on('interactionCreate', interaction => {
+    if (interaction.customId === '1') {
+        interaction.member.roles.add('1200515468524539994');
+    } else if (interaction.customId === '2') {
+        interaction.member.roles.add('1200515418457124905');
+    }
+    interaction.reply({ content: 'ПОШОЛ ТЫ НАХУЙ', ephemeral: true });
 });
 
 bot.on('messageCreate', (msg) => {
@@ -28,8 +35,6 @@ bot.on('messageCreate', (msg) => {
         msg.react('🚗');
     }
 });
-
-
 
 
 bot.login(token);
