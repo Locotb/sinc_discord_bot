@@ -1,24 +1,19 @@
-const { Client, GatewayIntentBits, MessageType, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, MessageType, ButtonStyle } = require('discord.js');
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
+const utils = require('./utils.js');
 const config = require('./config.json');
 const token = config.token;
 
 
 bot.once('ready', () => {
-    const buttons = new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-                .setCustomId('1')
-                .setLabel('Junior')
-                .setStyle('Primary'),
-
-                new ButtonBuilder()
-                .setCustomId('2')
-                .setLabel('Senior')
-                .setStyle('Danger'),
-    );
+    const buttonsData = [
+        { id: '1', label: 'junior', style: ButtonStyle.Success },
+        { id: '2', label: 'senior', style: ButtonStyle.Danger },
+    ];
+    const buttons = utils.createBtns(buttonsData);
     const channel = bot.channels.cache.get('1201972636650045570');
-    channel.send({ content: 'message', components: [buttons] });
+
+    channel.send({ content: 'message', components: buttons });
 });
 
 bot.on('interactionCreate', interaction => {
@@ -27,6 +22,7 @@ bot.on('interactionCreate', interaction => {
     } else if (interaction.customId === '2') {
         interaction.member.roles.add('1200515418457124905');
     }
+
     interaction.reply({ content: 'ПОШОЛ ТЫ НАХУЙ', ephemeral: true });
 });
 
